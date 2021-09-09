@@ -1,2 +1,2 @@
-# AdvancedJava
-JDBC work
+# AdvancedJavaProject
+Student Management Project using JDBC and SQL
