@@ -1,1 +1,12 @@
+package dao;
+
+import DataTransferObject.Student;
+
+public interface Studentdao {
+	public String add(Student student);
+	public Student Search(String sid);
+	public String update(Student newStudent);
+	public String delete(String id);
+
+}
 
