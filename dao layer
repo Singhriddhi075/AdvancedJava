@@ -1,1 +1,109 @@
+package dao;
+
+import java.sql.Statement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+
+import DataTransferObject.Student;
+import factory.Connectionfactory;
+
+public class StudentdaoImpl implements Studentdao {
+
+	@Override
+	public String add(Student student) {
+		String status = "";
+		try {
+			Connection con = Connectionfactory.getConnection();
+			Statement st = con.createStatement();
+			Student std = Search(student.getSid());
+			if (std == null) {
+			 int rowCount = st.executeUpdate("insert into student values('" + student.getSid() + "','"
+						+ student.getSname() + "','" + student.getSaddr() + "')");
+				if (rowCount == 1) {
+					status = "success";
+
+				} else {
+					status = "Failure";
+				}
+			} else {
+				status = "existed";
+			}
+
+		} catch (Exception e) {
+			status = "Failure";
+			e.getStackTrace();
+		}
+		return status;
+	}
+
+	@Override
+	public Student Search(String sid) {
+		Student student = null;
+		try {
+			Connection con = Connectionfactory.getConnection();
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery("Select * from student where SID='" + sid + "'");
+			boolean b = rs.next();
+			if (b == true) {
+				student = new Student();
+				student.setSid(rs.getString("SID"));
+				student.setSname(rs.getString("SNAME"));
+				student.setSaddr(rs.getString("SADDR"));
+			} else {
+				student = null;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return student;
+	}
+
+	@Override
+	public String update(Student newStudent) {
+		String status="";
+		try {
+			Connection con=Connectionfactory.getConnection();
+			Statement st=con.createStatement();
+			int rowCount=st.executeUpdate("Update student set SNAME= '"+newStudent.getSname()+"',SADDR='"+newStudent.getSaddr()+"' where SID='"+newStudent.getSid()+"'");
+			if(rowCount==1) {
+				status="success";
+				
+			}else {
+				status="failure";
+			}
+		}catch(Exception e) {
+			status="failure";
+			e.printStackTrace();
+		}
+		return status;
+		
+	}
+
+	@Override
+	public String delete(String sid) {
+		String status="";
+		try {
+			Connection con=Connectionfactory.getConnection();
+			Statement st=con.createStatement();
+			Student student=Search(sid);
+			if(student==null){
+			status="not existed";	
+			}else {
+				int rowCount=st.executeUpdate("delete from student where SID= '"+sid+"'");
+				if(rowCount==1) {
+					status="success";
+				}else {
+					status="failure";
+				}
+			}
+			
+		}catch(Exception e) {
+			status="failure";
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+}
 
