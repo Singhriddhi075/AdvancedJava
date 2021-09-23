@@ -1,1 +1,63 @@
+package factory;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+public class Connectionfactory {
+	private static Connection con;
+	static {
+		try {
+			Class.forName("oracle.jdbc.OracleDriver");
+			con=DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","system","Ramishwar");
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+	}
+	public static Connection getConnection() {
+		return con;
+	}
+	public static void close() {
+		try {
+			con.close();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+
+}
+**************************************************************************************
+package factory;
+import dao.Studentdao;
+import dao.StudentdaoImpl;
+
+public class StudentdaoFactory {
+	private static Studentdao Studentdao;
+	static {
+		Studentdao=new StudentdaoImpl();
+	}
+	public static Studentdao getStudentdao() {
+		return Studentdao;
+	}
+
+}
+*****************************************************************************************
+package factory;
+
+import Service.StudentService;
+import Service.StudentServiceImpl;
+
+public class StudentServicefactory {
+	private static StudentService Studentservice;
+        static {
+        	Studentservice=new StudentServiceImpl();
+        }
+        public static StudentService getStudentService() {
+        	return Studentservice;
+        }
+}
 
