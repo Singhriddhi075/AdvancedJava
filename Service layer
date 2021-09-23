@@ -8,3 +8,46 @@ public interface StudentService {
     public String updateStudent(Student student);
     public String deleteStudent(String sid);
 }
+###################################################################################################################
+package Service;
+
+import DataTransferObject.Student;
+import dao.Studentdao;
+import factory.StudentdaoFactory;
+
+public class StudentServiceImpl implements StudentService {
+
+	@Override
+	public String addStudent(Student student) {
+		Studentdao studentDao=StudentdaoFactory.getStudentdao();
+		String status=studentDao.add(student);
+		return status;
+	}
+
+	@Override
+	public Student searchStudent(String sid) {
+		Studentdao studentdao=StudentdaoFactory.getStudentdao();
+		Student student=studentdao.Search(sid);
+		
+		return student;
+	}
+
+	@Override
+	public String updateStudent(Student newStudent) {
+		Studentdao studentdao=StudentdaoFactory.getStudentdao();
+		String status=studentdao.update(newStudent);
+		return status;
+		
+		
+	}
+
+	@Override
+	public String deleteStudent(String sid) {
+		Studentdao studentdao=StudentdaoFactory.getStudentdao();
+		String status=studentdao.delete(sid);
+		return status;
+		
+	}
+
+}
+
