@@ -1,1 +1,137 @@
+package Cotrollerlayer;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
+import DataTransferObject.Student;
+import Service.StudentService;
+import factory.StudentServicefactory;
+
+public class Test {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		BufferedReader br = null;
+		System.out.println("===============================");
+		System.out.println("STUDENT MANAGEMENT PROGRAMME");
+		System.out.println("===============================");
+
+		try {
+			br = new BufferedReader(new InputStreamReader(System.in));
+			String sid = "";
+			String sname = "";
+			String saddr = "";
+			String status = "";
+			Student student = null;
+			StudentService studentService = StudentServicefactory.getStudentService();
+			while (true) {
+				System.out.println();
+				System.out.println("1. ADD STUDENT");
+				System.out.println("2. SEARCH STUDENT");
+				System.out.println("3. UPDATE STUDENT");
+				System.out.println("4. DELETE STUDENT");
+				System.out.println("YOUR OPTION : ");
+				int option = Integer.parseInt(br.readLine());
+				switch (option) {
+				case 1:
+					System.out.println("Student id :  ");
+					sid = br.readLine();
+					System.out.println("Student Name : ");
+					sname = br.readLine();
+					System.out.println("Student Address : ");
+					saddr = br.readLine();
+					student = new Student();
+					student.setSid(sid);
+					student.setSname(sname);
+					student.setSaddr(saddr);
+					status = studentService.addStudent(student);
+					if (status.equalsIgnoreCase("Success")) {
+						System.out.println("Status : Student added Successfuly");
+					}
+					if (status.equalsIgnoreCase("existed")) {
+						System.out.println("Status : Student existed already");
+					}
+					if (status.equalsIgnoreCase("Failure")) {
+						System.out.println("Status : Student Insertion Failure");
+					}
+
+					break;
+				case 2:
+					System.out.println("Sid :   ");
+					sid=br.readLine();
+					student=studentService.searchStudent(sid);
+					if(student==null) {
+						System.out.println("Status: Student Not existed");
+					}else {
+						System.out.println("Status: Student is existed");
+						System.out.println("Student detail");
+						System.out.println("---------------");
+						System.out.println("Student id :"+student.getSid());
+						System.out.println("Student sname:"+student.getSname());
+						System.out.println("Student saddr :"+student.getSaddr());
+					}
+					break;
+				case 3:
+					System.out.println("Student id : ");
+					sid=br.readLine();
+					student=studentService.searchStudent(sid);
+					if(student==null) {
+						System.out.println("student: Student is not existed");
+					}else {
+						System.out.print("Student Name[Old: "+student.getSname()+ "]New : ");
+						sname=br.readLine();
+						System.out.println("Student Address[Old: "+student.getSaddr()+ "]New : ");
+						saddr=br.readLine();
+						Student newStudent=new Student();
+						newStudent.setSid(sid);
+						newStudent.setSname(sname);
+						newStudent.setSaddr(saddr);
+						status=studentService.updateStudent(newStudent);
+						if(status.equalsIgnoreCase("success")) {
+							System.out.println("status: Student updated Success");
+						}
+						if(status.equalsIgnoreCase("failure")) {
+							System.out.println("status: student updation failure");
+						}
+						
+					}
+					break;
+				case 4:
+					System.out.println("Student id: ");
+					sid=br.readLine();
+					status=studentService.deleteStudent(sid);
+					if(status.equalsIgnoreCase("success")) {
+						System.out.println("status: Student deleted Successfully");
+					}
+					if(status.equalsIgnoreCase("Failure")) {
+						System.out.println("status: Student deletion failure");
+					}
+					if(status.equalsIgnoreCase("not existed")) {
+						System.out.println("status: Student not existed");
+					}
+					break;
+				case 5:
+					System.out.println("*---ThankYou For Using Student Management Project---*");
+					System.exit(0);
+					break;
+				default:
+					System.out.println("Invalid option you selected Please provide the number from 1,2,3,4,5");
+					break;
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				br.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}
+
+	}
+
+}
 
